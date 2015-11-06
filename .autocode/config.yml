@@ -1,7 +1,49 @@
 name: autocode2
 description: test
 author:
-  name: null
+  name: rschlick
   email: romain.schlick@gmail.com
-  url: null
-copyright: 2015 null
+  url: romainschlick.com
+copyright: 2015 Romain Schlick
+imports:
+  crystal/angular: ~0.3.0
+  crystal/npm: ~0.4.0
+  crystal/express: ~0.4.1
+  crystal/redis: ~0.3.1
+outputs:
+  - generator: npm.PackageGenerator
+    spec:
+      name: myapp
+      version: 1.0.0
+      description: "myapp's description"
+      dependencies:
+        express: ~4.13.3
+        grunt: ~0.4.5
+        sequelize: ~3.5.1
+  - generator: express.AppGenerator
+    spec:
+      body: true
+      cookie:
+        domain: .example.org
+      disable:
+        - etag
+      port: 8080
+      session:
+        secret: process.env.SESSION_SECRET
+        store:
+          host: process.env.SESSION_STORE
+          port: 6379
+          type: redis
+      static:
+        /images: public/images
+        /scripts: public/js
+        /styles: public/css
+      title: Homepage
+      view:
+        engine: jade
+      views: src/views
+  - generator: redis.ConfigGenerator
+    spec:
+      daemonize: true
+      port: 6379
+      timeout: 0
